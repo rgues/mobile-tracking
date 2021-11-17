@@ -1,0 +1,27 @@
+
+
+ion-card {
+
+  box-shadow: none;
+
+  ion-item {
+
+    ion-label {
+      font-size: .8rem;
+      span {
+        opacity: .7;
+      }
+
+    }
+
+    ion-icon {
+      color: var(--ion-color-danger);
+    }
+
+    p {
+      font-size: .8rem;
+    }
+
+  }
+
+}

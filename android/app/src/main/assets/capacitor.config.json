@@ -1,0 +1,6 @@
+{
+	"appId": "com.jfiexpress.JFIExpress",
+	"appName": "JFI Express",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

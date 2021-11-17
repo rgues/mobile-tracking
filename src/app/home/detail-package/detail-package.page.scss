@@ -1,0 +1,58 @@
+.text-facture {
+   span {
+     font-size: .5rem;
+     font-weight: bold;
+   }
+}
+
+.logo-facture {
+  ion-img {
+    margin: auto;
+    display: block;
+  }
+}
+
+.row-1 {
+  background: #fff;
+}
+
+.row-2 {
+  background: rgba(0,0,0,.2);
+}
+
+ion-row {
+    ion-col {
+
+      span, strong {
+        font-size: .5rem;
+        color: #222;
+      }
+
+      ion-label {
+        p {
+          font-size: .5rem;
+          color: #222;
+        }
+      }
+    }
+}
+
+.facture-date {
+  font-size: .5rem;
+}
+
+
+/** Design tablette */
+@media (min-width:320px) {
+
+/*   .row-1, .row-2 {
+    margin-top: 1rem;
+  }
+  .amount {
+      margin-top: 2rem;
+  }
+ */
+}
+
+
+

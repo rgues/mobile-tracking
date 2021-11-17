@@ -1,0 +1,7 @@
+{
+  "name": "JFI Express",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

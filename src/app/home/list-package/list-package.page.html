@@ -1,0 +1,65 @@
+<ion-header class="ion-no-border" [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'LIST_PACKAGE' | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="ion-no-border">
+    <ion-searchbar class="package-search" placeholder="{{ 'TRACKING_NUMBER_TEXT' | translate }}"  debounce="500" (ionChange)="searchForPackage($event)" type="text"></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refreSher($event)">
+    <ion-refresher-content
+      pullingIcon="reload-outline"
+      refreshingSpinner="circles"
+      refreshingText="{{ 'M_REFRESHING_TEXT' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+  <p class="ion-text-center"  *ngIf="loading">
+    <ion-spinner  name="circles"></ion-spinner>
+  </p>
+  <ion-grid *ngIf="packages && packages.length > 0 && !loading">
+    <ion-row>
+      <ion-col size="12">
+          <ion-item  *ngFor="let package of packages" (click)="sendPackageData(package)" detail>
+            <ion-avatar slot="start">
+              <img src="{{'assets/package.png'}}">
+            </ion-avatar>
+            <ion-label>
+               <h3><span><small>{{ 'TRACKING_NUMBER_TEXT' | translate}} : </small>  {{package.infos_package.PACKAGE_CODE ? package.infos_package.PACKAGE_CODE : ''}} </span></h3>
+               <p>
+                <ion-text color="dark">
+                  <span class="ion-float-left"><small>{{'WEIGHT' | translate }}: </small>{{ package.infos_package.PACKAGE_WEIGHT ? package.infos_package.PACKAGE_WEIGHT : ''}}{{ organisation.weight ? organisation.weight : ''}}</span>
+                  <span *ngIf="package.infos_package.PACKAGE_VOLUME" class="ion-float-right"><small>{{ 'VOLUME' | translate}}: </small>{{ package.infos_package.PACKAGE_VOLUME ?package.infos_package.PACKAGE_VOLUME : ''}}{{ organisation.volume ? organisation.volume : ''}}</span>
+                </ion-text>
+              </p>
+              <p>
+                <ion-text color="dark">
+                  <span class="ion-float-left"><small>{{'DELIVER_DATE_TEXT' | translate }}: </small>{{ package.infos_package.PACKAGE_ARRIVAL_ESTIMATION_DATE ? package.infos_package.PACKAGE_ARRIVAL_ESTIMATION_DATE : ''}}</span>
+                </ion-text>
+              </p>
+              <p>
+                <ion-text color="dark">
+                  <span class="ion-float-left"><small>{{ 'STATUT_TEXT' | translate}}: </small>{{ package.avoir ? getStatusName(package.avoir) : ''}}</span>
+                </ion-text>
+              </p>
+            </ion-label>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div  *ngIf="packages && packages.length === 0 && !loading &&!filter">
+    <p  class="ion-padding ion-text-center"> {{ 'EMPTY_PACKAGES_LIST' | translate }}</p>
+  </div>
+
+  <ion-infinite-scroll threshold="250px" (ionInfinite)="infinteScrollData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="{{ 'M_LOADING_MORE_DATA' | translate }}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

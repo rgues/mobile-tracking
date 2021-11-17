@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="end">
+      <ion-button slot="icon-only" (click)="closeCountries()">
+        <ion-icon color="light" name="close-circle-outline" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center subtitle">
+      {{'PREFIX_TEXT' | translate}}
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="ion-no-border">
+      <ion-searchbar class="track-search" placeholder="{{ 'ENTER_A_VALUE' | translate }}" type="text" debounce="500" (ionChange)="searchForInvitation($event)" type="text"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreSher($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles"
+      refreshingText="{{ 'M_REFRESHING_TEXT' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+  <p class="ion-text-center"  *ngIf="loading">
+    <ion-spinner  name="circles"></ion-spinner>
+  </p>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-radio-group (ionChange)="selectCountry($event)">
+          <ion-item  *ngFor="let country of states">
+            <ion-avatar slot="start" *ngIf="country.flag">
+              <img src="{{country.flag}}">
+            </ion-avatar>
+            <ion-label>{{country.name}} (+{{country.callingCodes[0]}})</ion-label>
+            <ion-radio slot="end" [value]="country.name"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div  *ngIf="states && states.length === 0 && !loading &&!filter">
+    <p  class="ion-padding ion-text-center"> {{ 'EMPTY_PREFIX_LIST' | translate }}</p>
+  </div>
+
+  <ion-infinite-scroll threshold="250px" (ionInfinite)="infinteScrollData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="{{ 'M_LOADING_MORE_DATA' | translate }}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

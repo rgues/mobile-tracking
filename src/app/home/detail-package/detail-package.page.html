@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border" *ngIf="printerActive" [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/list-package"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'DETAIL_PACKAGE' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="icon-only" (click)="printPackageOnPrinter()">
+        <ion-icon color="light" name="print-outline" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="print-container">
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreSher($event)">
+    <ion-refresher-content pullingIcon="reload-outline" refreshingSpinner="circles"
+      refreshingText="{{ 'M_REFRESHING_TEXT' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col  class="text-facture" size="4">
+      <span>{{'TRACKING_NUMBER_TEXT' | translate}}: {{packageData.infos_package.PACKAGE_CODE ? packageData.infos_package.PACKAGE_CODE : ''}} </span><br/>
+      <span>{{'SENDING_MODE_TEXT' | translate}}: {{packageData.infos_package.TYPE_LABEL ? packageData.infos_package.TYPE_LABEL : ''}}</span>
+      <span></span>
+      <span></span>
+      </ion-col>
+      <ion-col  class="logo-facture" size="4">
+        <ion-img *ngIf="organisation&&organisation.logo" [src]="getLogo(organisation.logo)"></ion-img>
+      </ion-col>
+      <ion-col class="ion-align-self-end" size="4">
+          <ngx-qrcode
+              [elementType]="text"
+              [value]="qrcode"
+              cssClass="qrcodeData"
+              errorCorrectionLevel="L">
+          </ngx-qrcode>
+          <p class="facture-date ion-text-right">{{ 'DATE_TEXT' | translate }} : {{currentDate}}</p>
+      </ion-col>
+    </ion-row>
+    <div class="ion-no-padding">
+      <ion-row>
+        <ion-col size="6">
+          <ion-label class="ion-text-left">
+            <p>{{'FROM_TEXT' | translate}}</p>
+            <p>{{packageData&&packageData.infos_package ? packageData.infos_package.AGENCE_NAME : ''}}</p>
+            <p>{{packageData&&packageData.infos_package ? packageData.infos_package.SENDER_FIRST_NAME : ''}}</p>
+            <p>{{packageData&&packageData.infos_package ? packageData.infos_package.SENDER_PHONE_NUMBER : ''}}</p>
+          </ion-label>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label class="ion-text-left">
+            <p>{{'TO_TEXT' | translate}}</p>
+            <p>{{packageData&&packageData.infos_package ? getAgencyName(packageData.infos_package.PACKAGE_DESTINATION_CITY) : ''}}</p>
+            <p>{{packageData&&packageData.infos_package ? packageData.infos_package.RECEIVER_NAME : ''}}</p>
+            <p>{{packageData&&packageData.infos_package ? packageData.infos_package.RECEIVER_PHONE_NUMBER : ''}}</p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-1">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'LABEL_TEXT' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{ packageData&&packageData.infos_package ? packageData.infos_package.PACKAGE_LABEL : ''}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-2">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'WEIGHT' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{ packageData&&packageData.infos_package ? packageData.infos_package.PACKAGE_WEIGHT : '' }}  {{ organisation && organisation.weight ? organisation.weight : ''}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-1">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'SHIPPING_DATE' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{ packageData&&packageData.infos_package ? formatDate(packageData.infos_package.PACKAGE_SHIPPING_DATE) : ''}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-2">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'RECEPTION_DATE_TEXT' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{ packageData&&packageData.infos_package ? formatDate(packageData.infos_package.PACKAGE_RECEPTION_DATE) : ''}}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-1">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'ARRIVAL_ESTIMATION_DATE' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{ packageData&&packageData.infos_package ? formatDate(packageData.infos_package.PACKAGE_ARRIVAL_ESTIMATION_DATE) : '' }}</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="row-2">
+        <ion-col size="6" class="ion-text-left">
+          <strong>{{ 'PACKAGE_STATUS' | translate }}</strong>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <span>{{packageData&&packageData.avoir ?  packageData.avoir.STATUS_LABEL ? packageData.avoir.STATUS_LABEL :  getStatusName(packageData.avoir) : ''}}</span>
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+    <div>
+      <ion-row class="ion-text-left">
+        <ion-col offset="2"> <strong> {{'AMOUNT_TO_PAY' | translate }} :</strong>  </ion-col>
+        <ion-col> <span> {{amount &&  amount.total ?  amount.total  : '0'}} {{ organisation && organisation.currency ? organisation.currency : ''}}</span></ion-col>
+      </ion-row>
+      <ion-row class="ion-text-left">
+          <ion-col offset="2"> <strong> {{'AMOUNT_PAY' | translate }} : </strong></ion-col>
+          <ion-col> <span> {{amount &&  amount.amountPay ?  amount.amountPay  : '0'}} {{ organisation && organisation.currency ? organisation.currency : ''}}</span> </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-left">
+          <ion-col offset="2"> <strong> {{'REST_TO_PAY' | translate }} : </strong> </ion-col>
+          <ion-col><span> {{amount &&  amount.restToPay ?  amount.restToPay  : '0'}} {{ organisation && organisation.currency ? organisation.currency : ''}}</span></ion-col>
+      </ion-row>
+    </div>
+
+    </ion-grid>
+
+</ion-content>

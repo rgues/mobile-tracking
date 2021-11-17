@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">JFI EXPRESS</string>
+    <string name="title_activity_main">jfiexpress</string>
+    <string name="package_name">com.jfiexpress.jfiexpress</string>
+    <string name="custom_url_scheme">com.jfiexpress.jfiexpress</string>
+</resources>

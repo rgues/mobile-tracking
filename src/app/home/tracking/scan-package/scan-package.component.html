@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger" class="ion-no-border">
+    <ion-title  class="ion-text-left">{{ 'PACKAGE_INFO' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  [fullscreen]="true">
+<ion-card>
+  <ion-item lines="none" >
+    <ion-icon name="scan-outline" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <strong>  {{'TRACKING_NUMBER_TEXT' | translate }} : </strong> <span> {{package &&  package.PACKAGE_CODE ?  package.PACKAGE_CODE : ''}}</span></ion-label>
+  </ion-item>
+
+  <ion-item lines="none" >
+    <ion-icon name="mail-open-outline" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <strong> {{'RECEIVER_FIRST_LAST_NAME' | translate }} : </strong> <span> {{package &&  package.RECEIVER_NAME ?  package.RECEIVER_NAME   :  package.RECEIVER_LAST_NAME ?  package.RECEIVER_LAST_NAME  : ''}}</span></ion-label>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon name="gift-outline" slot="start"></ion-icon>
+    <ion-label> <strong> {{'PACKAGE_WEIGHT' | translate }} : </strong> <span>{{package &&  package.PACKAGE_WEIGHT ?  package.PACKAGE_WEIGHT : ''}} {{ organisation && organisation.weight ? organisation.weight : ''}}</span> </ion-label>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon name="information-outline" slot="start"></ion-icon>
+    <ion-label> <strong> {{'BAG_NUMBER' | translate }} : </strong> <span> {{package &&  package.PACKAGE_LABEL ?  package.PACKAGE_LABEL : ''}}</span></ion-label>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon name="call-outline" slot="start"></ion-icon>
+    <ion-label> <strong> {{'PHONE_NUMBER' | translate }} : </strong> <span> {{package &&  package.RECEIVER_PHONE_NUMBER ?  package.RECEIVER_PHONE_NUMBER   : ''}}</span> </ion-label>
+  </ion-item>
+
+
+  <div class="ion-padding" *ngIf="!canResend">
+    <ion-button
+    color="dark"
+    expand="full"
+    class="ion-text-uppercase"
+    shape="round" (click)="sendSMS(package)">
+   {{'NOTIFY_CLIENT' | translate }}
+</ion-button>
+</div>
+
+<div class="ion-padding ion-text-center resend-message" *ngIf="canResend">
+  <p> {{ 'RESEND_SMS_MSG' | translate }}</p>
+</div>
+
+<div class="ion-padding" *ngIf="canResend">
+  <ion-button
+  color="dark"
+  expand="full"
+  class="ion-text-uppercase"
+  shape="round" (click)="resendSMS(package)">
+ {{'RESEND_SMS' | translate }}
+</ion-button>
+</div>
+
+</ion-card>
+</ion-content>
+
+<ion-footer  class="ion-no-border ion-padding ion-text-center">
+  <ion-button
+        color="danger"
+        expand="full"
+        class="ion-text-uppercase"
+        shape="round" (click)="backToScan()">
+       {{'RETURN_TO_SCAN' | translate }}
+  </ion-button>
+</ion-footer>

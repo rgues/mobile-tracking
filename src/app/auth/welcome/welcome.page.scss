@@ -1,0 +1,26 @@
+ion-content {
+  p.loader {
+      margin-top: 60%;
+  }
+}
+
+ion-footer {
+  p.copyright {
+    font-size: .5rem;
+    padding: 0;
+    margin-bottom: 5px;
+  }
+}
+
+.logo-img {
+  margin-top: 10%;
+}
+
+.desc {
+  color: var(--ion-color-danger-tint);
+  font-size: .8rem;
+}
+
+.input-desc {
+  font-size: .9rem;
+}

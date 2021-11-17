@@ -1,0 +1,31 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar   class="ion-text-left" color="danger">
+    <ion-title class="ion-margin">{{'TRACK_TEXT' | translate }}</ion-title>
+    <ion-searchbar class="track-search" type="text" showCancelButton="never" (ionCancel)="showImage=false" (click)="showImage=false" (ionChange)="showImage=false" [(ngModel)]="trackCode" (keyup.enter)="checkCodePackage()" searchIcon="scan-outline" placeholder="{{ 'TRACKING_INPUT_TEXT' | translate }}">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-text-left no-padding home">
+
+  <div *ngIf="showImage" class="tracking-img">
+  </div>
+
+  <div class="tracking-block ion-margin">
+    <h2>{{ 'LETS_TRACKING_TEXT' | translate }}
+    </h2>
+    <p>{{ 'LETS_TRACKING_MSG' | translate }}</p>
+    <ion-button color="primary" [disabled]="!trackCode" expand="block"  (click)="checkCodePackage()" fill="solid">{{ 'TRACK_ITEM' | translate }}</ion-button>
+  </div>
+
+  <div class="ion-margin ckeck" *ngIf="!trackCode">
+    <ion-button color="primary"  expand="block"  (click)="checkPackage()" fill="solid">{{ 'CHECK_PAGES_TEXT' | translate }}</ion-button>
+  </div>
+
+</ion-content>
+

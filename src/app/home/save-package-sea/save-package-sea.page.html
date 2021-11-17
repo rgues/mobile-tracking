@@ -1,0 +1,255 @@
+<ion-header class="ion-no-border" [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{ 'SEA_FREIGHT' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <p class="ion-text-center"  *ngIf="loadingType">
+    <ion-spinner  name="circles"></ion-spinner>
+  </p>
+  <ion-grid class="add-member" *ngIf="!loadingType">
+    <ion-row>
+      <ion-col size="12">
+
+              <form [formGroup]="formData">
+
+          <!--       <ion-row>
+                  <ion-col size="12">
+                    <ion-item>
+                      <ion-label>{{ 'DEPARTURE_AGENCY_TEXT' | translate }}</ion-label>
+                      <ion-select  formControlName="agence_departure_id">
+                        <ion-select-option *ngFor="let agency of agenciesList" [value]="agency.AGENCE_ID">{{ agency.AGENCE_NAME }}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.agence_departure_id">
+                        <div class="error-message" *ngIf="agence_departure_id.hasError(validation.type) && (agence_departure_id.dirty || agence_departure_id.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row> -->
+
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-item>
+                      <ion-label position="floating">{{ 'ARRIVAL_AGENCY_TEXT' | translate }}</ion-label>
+                      <ion-select  formControlName="agence_destination_id">
+                        <ion-select-option *ngFor="let agency of agenciesList" [value]="agency.AGENCE_ID">{{ agency.AGENCE_NAME }}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.agence_destination_id">
+                        <div class="error-message" *ngIf="agence_destination_id.hasError(validation.type) && (agence_destination_id.dirty || agence_destination_id.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+
+                <ion-row class="ion-padding" *ngIf="packetList && packetList.length > 0  && !loading">
+                  <ion-col size="12">
+                    <ion-item  class="ion-text-wrap" lines="none" *ngFor="let package of packetList; let k=index">
+                          <ion-label>
+                            <h2><strong>{{ package.tracking_number }}</strong> </h2>
+                            <h3>{{ package.receiver_firstname_and_lastname }}</h3>
+                            <p> {{ package.prefix_receiver_phone }} {{ viewPhone(package.receiver_phone,package.prefix_receiver_phone) }}</p>
+                            <p> <strong>{{ 'WEIGHT' | translate }} : </strong> {{ package.weight }} {{ organisation && organisation.weight ? organisation.weight : '' }}</p>
+                          </ion-label>
+                          <ion-button slot="end" fill="clear" color="danger" (click)="removeContact(k)">
+                            <ion-icon name="remove-circle-outline" slot="icon-only"></ion-icon>
+                        </ion-button>
+                      </ion-item>
+                  </ion-col>
+                </ion-row>
+
+              <div class="package-zone">
+           <!--      <ion-row>
+                  <ion-col size="12">
+                    <ion-item>
+                      <ion-label>{{ 'SENDING_MODE_TEXT' | translate }}</ion-label>
+                      <ion-select  formControlName="shipping_type">
+                        <ion-select-option *ngFor="let type of shippingList" [value]="type.TYPE_ID">{{ type.TYPE_LABEL }}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.shipping_type">
+                        <div class="error-message" *ngIf="shipping_type.hasError(validation.type) && (shipping_type.dirty || shipping_type.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row> -->
+
+                <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label position="floating">{{ 'RECEIVER_FIRST_LAST_NAME' | translate }}*</ion-label>
+                      <ion-input  type="text" formControlName="receiver_firstname_and_lastname" required></ion-input>
+                      <ion-button slot="end" fill="clear" color="dark" (click)="findCustomers()">
+                        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+                    </ion-button>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.receiver_firstname_and_lastname">
+                        <div class="error-message" *ngIf="receiver_firstname_and_lastname.hasError(validation.type) && (receiver_firstname_and_lastname.dirty || receiver_firstname_and_lastname.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col size="4">
+                    <ion-item  (click)="showPrefix()">
+                      <ion-label position="floating">+</ion-label>
+                      <ion-input type="text"  (ionChange)="formatPhone(formData.value.prefix_receiver_phone)"  formControlName="prefix_receiver_phone"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-item>
+                      <ion-label  position="floating">{{ 'PHONE_NUMBER_TEXT' | translate }}</ion-label>
+                      <ion-input type="tel" (ionChange)="formatPhone(formData.value.prefix_receiver_phone)"  formControlName="receiver_phone"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="12">
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.prefix_receiver_phone">
+                        <div class="error-message" *ngIf="prefix_receiver_phone.hasError(validation.type) && (prefix_receiver_phone.dirty || prefix_receiver_phone.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                      <ng-container *ngFor="let validation of validationMessages.receiver_phone">
+                        <div class="error-message" *ngIf="receiver_phone.hasError(validation.type) && (receiver_phone.dirty || receiver_phone.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+
+                <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label position="floating">{{ 'BAG_NUMBER' | translate }}*</ion-label>
+                      <ion-input  type="text" formControlName="bag_number" required></ion-input>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.bag_number">
+                        <div class="error-message" *ngIf="bag_number.hasError(validation.type) && (bag_number.dirty || bag_number.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label position="floating">{{ 'WEIGHT' | translate }} ({{ organisation && organisation.weight ? organisation.weight : ''}})*</ion-label>
+                      <ion-input  type="number" formControlName="weight" required></ion-input>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.weight">
+                        <div class="error-message" *ngIf="weight.hasError(validation.type) && (weight.dirty || weight.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label position="floating">{{ 'VOLUME' | translate }}({{organisation && organisation.volume ? organisation.volume : ''}})*</ion-label>
+                      <ion-input  type="number" formControlName="volume" required></ion-input>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.volume">
+                        <div class="error-message" *ngIf="volume.hasError(validation.type) && (volume.dirty || volume.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+<!--
+                <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label position="floating">{{ 'AMOUNT_TEXT' | translate }}({{organisation && organisation.currency ? organisation.currency : ''}})*</ion-label>
+                      <ion-input  type="number" formControlName="amount_paid" required></ion-input>
+                    </ion-item>
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validationMessages.amount_paid">
+                        <div class="error-message" *ngIf="amount_paid.hasError(validation.type) && (amount_paid.dirty || amount_paid.touched)">
+                          <ion-icon name="information-circle-outline" ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row> -->
+
+        <!--         <ion-row>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label>{{ 'RECEPTION_DATE_TEXT' | translate }}</ion-label>
+                      <ion-datetime formControlName="reception_date" [max]="currentDate" displayFormat="DDDD D MMM, YYYY" pickerFormat="DD MMMM YYYY">
+                      </ion-datetime>
+                    </ion-item>
+                  </ion-col>
+                </ion-row> -->
+
+                <ion-row *ngIf="canAddNewPackage()">
+                  <ion-col size="9">
+                    <ion-item  lines="none">
+                      <ion-label>{{ 'ADD_NEW_PACKAGE' | translate }}</ion-label>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="3">
+                    <ion-button fill="clear" [disabled]="!canAddNewPackage() || loading" color="dark" (click)="addPackage()">
+                        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+
+              </div>
+              </form>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding ion-text-center">
+  <ion-button expand="full"
+  color="danger"
+  class="ion-text-uppercase"
+  shape="round" [disabled]="!canSavePackage() || loading" (click)="savePackage()">
+  {{ 'SAVE_TEXT' | translate }}
+</ion-button>
+</ion-footer>

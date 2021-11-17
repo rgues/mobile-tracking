@@ -1,0 +1,40 @@
+<ion-header  class="ion-no-border" [translucent]="true">
+  <ion-toolbar  color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-left">
+      {{'CHECKOUT_PACKAGE_TEXT' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [class]="scannerOn ? 'has-scanner' : ''"  [fullscreen]="true">
+
+
+  <div class="qrcode" *ngIf="scannerOn">
+
+  </div>
+
+  <div *ngIf="!scannerOn">
+
+    <p class="ion-padding scan-qrcode">
+      <ion-icon color="dark" name="scan-outline"></ion-icon>
+    </p>
+
+    <p class="ion-text-center message-qrcode">
+      {{'QR_CODE_CHECKING_MSG_TEXT' | translate }}
+    </p>
+
+  </div>
+
+</ion-content>
+
+<ion-footer  *ngIf="!scannerOn" class="ion-no-border ion-padding ion-text-center">
+  <ion-button
+        color="danger"
+        class="ion-text-uppercase"
+        shape="round" (click)="openScannerQrCode()">
+     {{'QR_CODE_SCAN_BTN' | translate }}
+  </ion-button>
+</ion-footer>

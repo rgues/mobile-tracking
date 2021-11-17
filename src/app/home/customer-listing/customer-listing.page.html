@@ -1,0 +1,147 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-margin">{{'CHECK_PAGES_TEXT' | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar   class="ion-text-left" color="danger">
+    <ion-searchbar class="btn-search" type="text" showCancelButton="never" (keyup.enter)="getCustomer()"  [(ngModel)]="phone" (ionChange)="getCustomer()"  placeholder="{{ 'PHONE_NUMBER' | translate }}">
+    </ion-searchbar>
+    <ion-buttons slot="end">
+    <ion-button slot="icon-only" (click)="findCustomers()">
+      <ion-icon color="light" name="people-outline" ></ion-icon>
+    </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="no-padding">
+
+  <p class="ion-text-center"  *ngIf="loading">
+    <ion-spinner  name="circles"></ion-spinner>
+  </p>
+
+  <ion-card class="balance" *ngIf="packages && packages.length > 0 && !loading">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-align-self-center ion-text-center">
+          <span> {{ 'BALANCE_TEXT' | translate}}  </span> :  {{totalRestToPay ? totalRestToPay : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          <span>  {{ 'WEIGHT_TEXT' | translate}}</span>
+        </ion-col>
+        <ion-col size="3">
+          <span> {{ 'TOTAL_TEXT' | translate}} </span>
+        </ion-col>
+
+        <ion-col size="3">
+          <span> {{ 'PAID_TEXT' | translate}} </span>
+        </ion-col>
+
+        <ion-col size="3">
+          <span> {{ 'DISCOUNT_TEXT' | translate}}  </span>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+           {{ totalWeight ? totalWeight : '0' }} {{ organisation.weight ? organisation.weight : ''}}
+        </ion-col>
+
+        <ion-col size="3">
+          {{ balance ? balance : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+        </ion-col>
+
+        <ion-col size="3">
+          {{ totalAmountPaid ? totalAmountPaid : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+        </ion-col>
+
+        <ion-col size="3">
+          {{ totalDiscount ? totalDiscount : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="ion-text-left"  *ngFor="let package of packages">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col size="6">
+        <span> {{ 'RECEIVER_TEXT' | translate}} : </span> {{package.infos_package.RECEIVER_NAME ? package.infos_package.RECEIVER_NAME : ''}}
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col size="6">
+        <span> {{ 'CODE_TEXT' | translate}} : </span>  {{package.infos_package.PACKAGE_CODE ? package.infos_package.PACKAGE_CODE : ''}}
+        </ion-col>
+
+      <ion-col size="6">
+        <span> {{ 'TEL_TEXT' | translate}} : </span> {{package.infos_package.RECEIVER_PHONE_NUMBER ? viewPhone(package.infos_package.RECEIVER_PHONE_NUMBER, package.infos_package.PREFIX_RECEIVER_PHONE): ''}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <span> {{ 'DEPARTURE_TEXT' | translate}} : </span> {{package.departure_agence_name ? package.departure_agence_name : ''}}
+      </ion-col>
+      <ion-col size="6">
+        <span> {{ 'ARRIVAL_TEXT' | translate}} : </span> {{package.destination_agence_name ? package.destination_agence_name : ''}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <span> {{ 'WEIGHT_TEXT' | translate}} : </span> {{ package.infos_package.PACKAGE_WEIGHT ? package.infos_package.PACKAGE_WEIGHT : ''}} {{ organisation.weight ? organisation.weight : ''}}
+      </ion-col>
+      <ion-col size="6">
+        <span> {{ 'TOTAL_TEXT' | translate}} : </span> {{package.total_amount ? package.total_amount : '0'}}  {{ organisation.currency ? organisation.currency : ''}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <span> {{ 'PAID_TEXT' | translate}} : </span> {{package.amount_paid ? package.amount_paid : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+      </ion-col>
+
+      <ion-col size="6">
+        <span> {{ 'DISCOUNT_TEXT' | translate}} : </span> {{package.value_remise ? package.value_remise : '0'}} {{ organisation.currency ? organisation.currency : ''}}
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <span> {{ 'BALANCE_TEXT' | translate}} : </span> {{ getBalance(package.total_amount ? package.total_amount : 0, package.value_remise ? package.value_remise : 0)}} {{ organisation.currency ? organisation.currency : ''}}
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-card>
+
+  <div  *ngIf="packages && packages.length === 0 && !loading &&phone">
+    <p  class="ion-padding ion-text-center"> {{ 'EMPTY_PACKAGES_LIST' | translate }}</p>
+  </div>
+
+  <ion-infinite-scroll threshold="250px" (ionInfinite)="infinteScrollData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="{{ 'M_LOADING_MORE_DATA' | translate }}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-row class="ion-padding" *ngIf="!phone && !loading">
+    <ion-col>
+         <p class="ion-text-left report">{{ 'FIND_CUSTOMER_MSG' | translate }}</p>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+
+

@@ -1,0 +1,32 @@
+<ion-app>
+  <ion-split-pane contentId="main">
+  <ion-menu side="start" type="push" contentId="main">
+    <ion-header>
+      <ion-toolbar color="danger">
+        <ion-title>JFI Express</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-toogle-menu auto-hide="false" *ngFor="let page of menuItens">
+          <ion-item lines="none" *ngIf="page.canshow" [routerLink]="[page.path]" (click)="closeMenu()"  routerDirection="root" [class.active-menu]="activePath === page.path">
+            <ion-icon color="dark" slot="start" [name]="page.icon" ></ion-icon>
+            <ion-label>
+              <h2> {{page.title}} </h2>
+            </ion-label>
+          </ion-item>
+        </ion-toogle-menu>
+        <ion-toogle-menu  *ngIf="isAuth">
+          <ion-item lines="none" (click)="logout()"  routerDirection="root" >
+            <ion-icon color="dark" slot="start" name="log-out-outline" ></ion-icon>
+            <ion-label>
+              <h2> {{'LOGOUT_TEXT' | translate}} </h2>
+            </ion-label>
+          </ion-item>
+        </ion-toogle-menu>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane>
+</ion-app>

@@ -1,0 +1,24 @@
+
+
+ion-row {
+  ion-col {
+      opacity: .9;
+      span {
+          color : #222;
+      }
+  }
+}
+
+.report {
+   font-size: 1rem;
+   color: #222;
+}
+
+ion-card {
+  border: solid 1px #eee;
+  box-shadow: none;
+}
+
+.balance {
+  background:  #eee;
+}

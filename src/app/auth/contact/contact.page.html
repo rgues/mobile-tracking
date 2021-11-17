@@ -1,0 +1,38 @@
+<ion-header   class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button  color="light" defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-start" color="light">
+      <span>{{'CONTACT_TEXT' | translate}}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="welcome-content"  [fullscreen]="true">
+
+    <p class="ion-text-center ion-padding loader"  *ngIf="loading"> <ion-spinner name="circles"></ion-spinner></p>
+
+
+    <div class="tracking-img">
+    </div>
+
+  <ion-grid *ngIf="!loading">
+    <ion-row>
+      <ion-col size="6"  class="ion-padding ion-align-items-center">
+          <P><span class="desc"> {{'EMAIL_TEXT' | translate }} :</span> <span class="input-desc">  {{ organisation.organisation_email  ? organisation.organisation_email  : '-' }} </span> </P>
+      </ion-col>
+      <ion-col size="6"  class="ion-padding ion-align-items-center">
+        <P> <span class="desc"> {{'PHONE_TEXT' | translate }} : </span> <span class="input-desc"> {{ organisation.organisation_phone_number_2 ? organisation.organisation_phone_number_2   : organisation.organisation_phone_number_1 ?  organisation.organisation_phone_number_1 : '-' }}</span> </P>
+    </ion-col>
+      <P  class="ion-padding"> {{ organisation.organisation_address ? organisation.organisation_address : '' }}</P>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer *ngIf="!loading" class="ion-no-border ion-padding ion-text-center">
+  <p class="copyright ion-text-center">copyright {{organisation.organisation_copyright}}</p>
+</ion-footer>
+
+

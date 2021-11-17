@@ -1,0 +1,16 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-title class="ion-text-center
+            ion-text-uppercase
+            welcome-title" color="light">
+      <span>{{'WELCOME_MSG1' | translate}}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="welcome-content"  [fullscreen]="true">
+
+    <p class="ion-text-center ion-padding loader"  *ngIf="loading"> <ion-spinner name="circles"></ion-spinner></p>
+
+</ion-content>
+

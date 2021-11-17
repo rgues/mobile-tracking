@@ -1,0 +1,159 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+/* ----------- general page custom style ---------- */
+
+
+a {
+  color: var(--ion-color-light);
+}
+
+ion-toolbar .logo-no-right-slot {
+  height: 3.8rem;
+}
+
+.alert-button.sc-ion-alert-md {
+  color: #222;
+}
+
+.alert-radio-label.sc-ion-alert-md {
+  white-space: normal;
+}
+
+
+
+/* ----------- scanner page custom style ---------- */
+
+.qrcode {
+    background: transparent;
+    height: 200px;
+    width: 200px;
+    margin: auto;
+    margin-top: 50%;
+    border: 2px solid #fff;
+    border-radius: .5rem;
+}
+
+.qrcodeData {
+  height: 100px;
+  width: 100px;
+  margin: auto;
+}
+
+
+.scan-qrcode {
+  text-align: center;
+  margin-top: 5rem;
+   ion-icon {
+      font-size: 10rem;
+      text-align: center;
+
+   }
+}
+
+.message-qrcode {
+  color: #222;
+}
+
+
+/* ----------- dashboard page custom style ---------- */
+.home {
+  --padding-top: 5%;
+  --ion-grid-column-padding: 10px;
+  .thumb-img {
+      height: 3rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+  }
+}
+.home > ion-grid > ion-row > ion-col {
+  border: 1px solid #ccc;
+  background: var(--ion-color-danger);
+  margin: 0.5rem;
+  border-radius: .5rem;
+}
+
+.home-menu-popover {
+  margin-bottom: 0;
+  font-size: .99rem;
+  .item-label {
+      font-weight: 300;
+  }
+}
+
+.tracking-img {
+  height: 250px;
+  width: 250px;
+  margin: auto;
+  background: url('/assets/track.jpeg') ;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+ion-toolbar.subtitle {
+  .title-ios.title-default,
+  .title-md.title-default {
+      padding-inline-start: 5px;
+      padding-inline-end: 5px;
+      font-weight: 400;
+      font-size: 1.1rem;
+  }
+}
+
+
+.track-search, .package-search ,.btn-search {
+  --placeholder-color: var(--ion-color-dark);
+  --color: var(--ion-color-dark);
+  --border-radius: 1rem;
+  --box-shadow: none;
+  --border: 1px solid gainsboro;
+  --background: #fff;
+}
+
+.package-search {
+  --background: gainsboro;
+}
+
+.validation-errors{
+  color: var(--ion-color-danger);
+  font-size: .7rem;
+}
+
+
+
+/** Design tablette */
+@media  (min-width: 481px) and (max-width: 767px) {
+
+  .tracking-img {
+    height: 300px;
+    width: 300px;
+    margin: auto;
+  }
+
+}
+
+
